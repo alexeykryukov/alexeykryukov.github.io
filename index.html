@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>Alexey Kryukov — Senior QA Automation Engineer / QA Lead</title>
-  <meta name="description" content="Senior QA Automation Engineer / QA Lead with 13+ years in QA and software engineering. Playwright, TypeScript, API testing, CI/CD, QA ownership and AI/LLM testing. 32,000+ Upwork hours and 150+ completed jobs." />
+  <meta name="description" content="Alexey Kryukov — Senior QA Automation Engineer / QA Lead with 13+ years in QA and software engineering. Playwright, TypeScript, API testing, CI/CD, QA ownership and AI/LLM testing. 32,000+ Upwork hours and 150+ completed jobs." />
 
   <meta property="og:title" content="Alexey Kryukov — Senior QA Automation Engineer / QA Lead" />
-  <meta property="og:description" content="13+ years in QA and software engineering. Playwright, TypeScript, API testing, CI/CD, QA ownership and AI/LLM testing." />
+  <meta property="og:description" content="13+ years in QA and software engineering. Playwright, TypeScript, API testing, CI/CD and full QA ownership." />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://alexeykryukov.github.io/" />
 
   <meta name="robots" content="index,follow" />
 
@@ -18,6 +19,7 @@
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Alexey Kryukov",
+    "url": "https://alexeykryukov.github.io/",
     "jobTitle": "Senior QA Automation Engineer / QA Lead",
     "sameAs": [
       "https://www.linkedin.com/in/alexeykryukov/",
@@ -106,7 +108,7 @@
     }
 
     .hero {
-      padding: 84px 0 56px;
+      padding: 78px 0 56px;
     }
 
     .eyebrow {
@@ -118,18 +120,40 @@
     }
 
     h1 {
-      margin: 12px 0 18px;
-      font-size: clamp(42px, 7vw, 78px);
+      margin: 10px 0 16px;
+      font-size: clamp(42px, 7vw, 76px);
       line-height: 1.02;
       letter-spacing: -0.05em;
-      max-width: 900px;
+      max-width: 950px;
     }
 
-    .hero p {
-      max-width: 760px;
-      font-size: clamp(18px, 2.3vw, 23px);
+    .hero-main {
+      max-width: 820px;
+      font-size: clamp(18px, 2.2vw, 23px);
       color: var(--muted);
       margin: 0;
+    }
+
+    .proof-line {
+      margin-top: 24px;
+      max-width: 900px;
+      font-size: clamp(16px, 2vw, 19px);
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .availability {
+      margin-top: 10px;
+      color: var(--accent-2);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .tagline {
+      margin-top: 24px;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 16px;
     }
 
     .actions {
@@ -263,6 +287,19 @@
       color: var(--accent-2);
     }
 
+    .case-card {
+      border-left: 3px solid var(--accent);
+    }
+
+    .case-kicker {
+      color: var(--accent-2);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
     .contact {
       padding-bottom: 90px;
     }
@@ -289,8 +326,9 @@
       <div class="brand">Alexey Kryukov</div>
       <div class="nav-links">
         <a href="#results">Results</a>
-        <a href="#projects">Projects</a>
+        <a href="#projects">QA Projects</a>
         <a href="#experience">Experience</a>
+        <a href="#cases">Case Studies</a>
         <a href="#contact">Contact</a>
       </div>
     </nav>
@@ -298,12 +336,25 @@
 
   <main>
     <section class="hero wrap">
-      <div class="eyebrow">Senior QA Automation Engineer / QA Lead</div>
-      <h1>I build quality systems that help teams ship with confidence.</h1>
-      <p>
-        13+ years in QA and software engineering. I work across Playwright, TypeScript,
-        API testing, CI/CD, test strategy, debugging and release ownership — from the
-        first requirement to the final go/no-go decision.
+      <div class="eyebrow">Alexey Kryukov</div>
+      <h1>Senior QA Automation Engineer / QA Lead</h1>
+
+      <p class="hero-main">
+        13+ years in QA and software engineering. Playwright, TypeScript, API testing,
+        CI/CD and full QA ownership.
+      </p>
+
+      <div class="proof-line">
+        500 automated tests · ~95% key-flow coverage · ~90% faster regression · 32,000+ Upwork hours
+      </div>
+
+      <div class="availability">
+        Remote · Contract / B2B · Open to international teams
+      </div>
+
+      <p class="tagline">
+        I build quality systems that help teams ship with confidence — from requirements and
+        exploratory testing to automation, backend validation, debugging and release decisions.
       </p>
 
       <div class="actions">
@@ -317,7 +368,7 @@
     <section id="results" class="wrap">
       <h2 class="section-title">Selected results</h2>
       <p class="section-lead">
-        I prefer measurable outcomes over long skill lists. These are a few results from real product work.
+        A few measurable results from real product work.
       </p>
 
       <div class="metrics">
@@ -479,6 +530,25 @@
           </p>
         </div>
       </div>
+    </section>
+
+    <section id="cases" class="wrap">
+      <h2 class="section-title">Case studies</h2>
+      <p class="section-lead">
+        Short stories about real QA work and measurable outcomes.
+      </p>
+
+      <article class="card case-card">
+        <div class="case-kicker">Automation case</div>
+        <h3>How I reduced regression time by ~90% with 500 automated tests</h3>
+        <p>
+          I worked as the only QA in a small product team. A lot of regression was manual, so I
+          started building Playwright automation from scratch — first the key user flows, then API
+          setup, fixtures, test data, CI and less critical scenarios. Over time the suite grew to
+          around 500 automated tests, covered ~95% of key business flows and reduced regression time
+          by around 90%.
+        </p>
+      </article>
     </section>
 
     <section class="wrap">
