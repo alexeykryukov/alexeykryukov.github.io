@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>QA Case Study: Defects Blocking Sales Channels and ~500% Sales Growth After Fixes — Alexey Kryukov</title>
+  <meta name="description" content="A real QA case study by Alexey Kryukov: identifying defects that blocked several sales channels on a healthcare product. After the fixes, sales through those channels increased by around 500%, representing roughly $500k in business impact." />
+  <link rel="canonical" href="https://alexeykryukov.github.io/case-studies/qa-sales-channel-impact.html" />
+  <meta name="robots" content="index,follow" />
+
+  <meta property="og:title" content="QA Case Study: Defects Blocking Sales Channels and ~500% Sales Growth After Fixes" />
+  <meta property="og:description" content="A real QA investigation with measurable business impact: defects blocking sales channels, followed by ~500% sales growth after the fixes." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://alexeykryukov.github.io/case-studies/qa-sales-channel-impact.html" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "QA Case Study: Defects Blocking Sales Channels and ~500% Sales Growth After Fixes",
+    "description": "A real QA case study about identifying defects that blocked several sales channels on a healthcare product. After the fixes, sales through those channels increased by around 500%, representing roughly $500k in business impact.",
+    "author": {
+      "@type": "Person",
+      "name": "Alexey Kryukov",
+      "url": "https://alexeykryukov.github.io/",
+      "sameAs": [
+        "https://www.linkedin.com/in/alexeykryukov/",
+        "https://github.com/alexeykryukov",
+        "https://www.upwork.com/freelancers/alexey"
+      ]
+    },
+    "mainEntityOfPage": "https://alexeykryukov.github.io/case-studies/qa-sales-channel-impact.html",
+    "keywords": [
+      "Quality Assurance",
+      "QA Lead",
+      "Healthcare QA",
+      "Sales Channel Defects",
+      "Root Cause Analysis",
+      "Business Impact",
+      "Software Testing",
+      "Senior QA Engineer"
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a2f;
+      --panel-2: #18223b;
+      --text: #eef3ff;
+      --muted: #aeb9d1;
+      --line: #26324f;
+      --accent: #7db3ff;
+      --accent-2: #a8caff;
+      --max: 920px;
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(64, 118, 255, .16), transparent 34rem),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    a { color: inherit; }
+
+    .wrap {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 28px 0 0;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 10px 0;
+    }
+
+    .brand {
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .back {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .hero {
+      padding: 70px 0 34px;
+    }
+
+    .kicker {
+      color: var(--accent-2);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 12px 0 18px;
+      font-size: clamp(40px, 6vw, 64px);
+      line-height: 1.04;
+      letter-spacing: -0.045em;
+    }
+
+    .intro {
+      margin: 0;
+      max-width: 800px;
+      color: var(--muted);
+      font-size: clamp(18px, 2.2vw, 22px);
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 34px 0 0;
+    }
+
+    .metric {
+      background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 28px;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .metric span {
+      color: var(--muted);
+    }
+
+    article {
+      padding: 20px 0 70px;
+    }
+
+    article section {
+      margin-top: 46px;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 30px;
+      letter-spacing: -0.03em;
+    }
+
+    p {
+      margin: 0 0 16px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .note {
+      background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin: 26px 0;
+    }
+
+    ul {
+      margin: 12px 0 0;
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 7px 0;
+      color: var(--muted);
+    }
+
+    .cta {
+      background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-top: 48px;
+    }
+
+    .cta h2 {
+      font-size: 25px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      display: inline-flex;
+      padding: 11px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      text-decoration: none;
+      font-weight: 700;
+      background: var(--panel);
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #08101e;
+      border-color: transparent;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 24px 0 36px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 720px) {
+      .metrics { grid-template-columns: 1fr; }
+      .hero { padding-top: 48px; }
+      nav { align-items: flex-start; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="wrap">
+    <nav aria-label="Case study navigation">
+      <a class="brand" href="/">Alexey Kryukov</a>
+      <a class="back" href="/">← Back to portfolio</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="kicker">QA / Business Impact Case Study</div>
+      <h1>How QA uncovered defects blocking sales channels</h1>
+      <p class="intro">
+        While working as a QA Lead on a healthcare / telemedicine product, I found defects that were
+        preventing several sales channels from working correctly. After the fixes, sales through those
+        channels increased by around 500%, representing roughly $500k in business impact.
+      </p>
+
+      <div class="metrics">
+        <div class="metric">
+          <strong>Several</strong>
+          <span>sales channels affected by the defects</span>
+        </div>
+        <div class="metric">
+          <strong>~500%</strong>
+          <span>sales increase through those channels after the fixes</span>
+        </div>
+        <div class="metric">
+          <strong>~$500k</strong>
+          <span>rough business impact associated with the recovery</span>
+        </div>
+      </div>
+    </section>
+
+    <article>
+      <section>
+        <h2>The situation</h2>
+        <p>
+          The product had multiple sales channels, and some of them were not working as expected.
+          The issue was important because it was not just a cosmetic bug or a small usability problem:
+          it directly affected whether customers could successfully move through those channels.
+        </p>
+        <p>
+          From a QA point of view, this was exactly the kind of problem where looking only at isolated
+          screens or single test cases would not be enough. The full flow and the business outcome mattered.
+        </p>
+      </section>
+
+      <section>
+        <h2>What I found</h2>
+        <p>
+          During testing and investigation, I identified defects that were blocking several of those
+          sales channels.
+        </p>
+        <p>
+          The important part was not only reporting that something failed. It was connecting the defect
+          to the actual customer journey and making the business impact visible enough that the problem
+          could be treated with the right priority.
+        </p>
+
+        <div class="note">
+          A QA issue becomes much more useful to a team when it explains not only what is broken,
+          but what that breakage means for users and for the business.
+        </div>
+      </section>
+
+      <section>
+        <h2>Why this mattered</h2>
+        <p>
+          In many products, a bug can look small technically while having a much larger effect on revenue,
+          onboarding, payments or conversion.
+        </p>
+        <p>
+          This case was a good reminder that QA should not stop at “the feature works” or “the test passes”.
+          The real question is whether the complete user and business flow works the way the product expects.
+        </p>
+      </section>
+
+      <section>
+        <h2>The result after the fixes</h2>
+        <p>
+          After the defects were fixed, sales through the affected channels increased by around 500%.
+        </p>
+        <p>
+          The estimated business impact was roughly $500k.
+        </p>
+        <p>
+          I do not describe this as “QA saved $500k”, because the result came from the whole team:
+          the defects had to be understood, fixed and released. My contribution was identifying the
+          problems that were blocking the channels and helping make their impact clear.
+        </p>
+      </section>
+
+      <section>
+        <h2>What I took from this</h2>
+        <p>
+          The best QA work is often not about the number of bugs found.
+        </p>
+        <p>
+          It is about finding the bugs that actually matter.
+        </p>
+        <p>
+          That can mean looking beyond the visible UI, understanding the full product flow,
+          asking what the user is trying to achieve, and thinking about the business consequence
+          when that flow breaks.
+        </p>
+      </section>
+
+      <section>
+        <h2>My role at the time</h2>
+        <p>
+          I was working as a QA Lead on a healthcare / telemedicine platform.
+          My broader responsibilities included test strategy, automation with Selenium and C#,
+          API testing, database validation, multiple test environments, team leadership and release decisions.
+        </p>
+        <p>
+          That wider product context helped me treat QA as more than execution of predefined test cases.
+        </p>
+      </section>
+
+      <section class="cta">
+        <h2>About me</h2>
+        <p class="muted">
+          I’m Alexey Kryukov, a Senior QA Automation Engineer / QA Lead with 13+ years in QA
+          and software engineering. I work across test strategy, Playwright, APIs, CI/CD,
+          debugging, release readiness and full QA ownership.
+        </p>
+
+        <div class="actions">
+          <a class="btn primary" href="mailto:alexey.kryukov.91@gmail.com">Email me</a>
+          <a class="btn" href="https://www.linkedin.com/in/alexeykryukov/" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn" href="https://github.com/alexeykryukov" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn" href="https://www.upwork.com/freelancers/alexey" target="_blank" rel="noopener">Upwork</a>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer>
+    <div class="wrap">© Alexey Kryukov · Senior QA Automation Engineer / QA Lead</div>
+  </footer>
+</body>
+</html>
