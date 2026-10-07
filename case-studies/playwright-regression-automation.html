@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>How I Reduced Regression Time by ~90% with 500 Playwright Tests — Alexey Kryukov</title>
+  <meta name="description" content="A real QA automation case study by Alexey Kryukov: building ~500 Playwright tests from scratch, covering ~95% of key product flows and reducing regression time by around 90%." />
+  <link rel="canonical" href="https://alexeykryukov.github.io/case-studies/playwright-regression-automation.html" />
+  <meta name="robots" content="index,follow" />
+
+  <meta property="og:title" content="How I Reduced Regression Time by ~90% with 500 Playwright Tests" />
+  <meta property="og:description" content="A real QA automation case study: ~500 Playwright tests, ~95% key-flow coverage and ~90% faster regression." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://alexeykryukov.github.io/case-studies/playwright-regression-automation.html" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "How I Reduced Regression Time by ~90% with 500 Playwright Tests",
+    "description": "A real QA automation case study about building around 500 Playwright tests from scratch, covering around 95% of key product flows and reducing regression time by around 90%.",
+    "author": {
+      "@type": "Person",
+      "name": "Alexey Kryukov",
+      "url": "https://alexeykryukov.github.io/",
+      "sameAs": [
+        "https://www.linkedin.com/in/alexeykryukov/",
+        "https://github.com/alexeykryukov",
+        "https://www.upwork.com/freelancers/alexey"
+      ]
+    },
+    "mainEntityOfPage": "https://alexeykryukov.github.io/case-studies/playwright-regression-automation.html",
+    "keywords": [
+      "QA Automation",
+      "Playwright",
+      "TypeScript",
+      "Regression Testing",
+      "Test Automation",
+      "CI/CD",
+      "Senior QA Automation Engineer",
+      "QA Lead"
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a2f;
+      --panel-2: #18223b;
+      --text: #eef3ff;
+      --muted: #aeb9d1;
+      --line: #26324f;
+      --accent: #7db3ff;
+      --accent-2: #a8caff;
+      --max: 920px;
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(64, 118, 255, .16), transparent 34rem),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    a { color: inherit; }
+
+    .wrap {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 28px 0 0;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 10px 0;
+    }
+
+    .brand {
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .back {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .hero {
+      padding: 70px 0 34px;
+    }
+
+    .kicker {
+      color: var(--accent-2);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 12px 0 18px;
+      font-size: clamp(40px, 6vw, 66px);
+      line-height: 1.04;
+      letter-spacing: -0.045em;
+    }
+
+    .intro {
+      margin: 0;
+      max-width: 780px;
+      color: var(--muted);
+      font-size: clamp(18px, 2.2vw, 22px);
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 34px 0 0;
+    }
+
+    .metric {
+      background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .metric span {
+      color: var(--muted);
+    }
+
+    article {
+      padding: 20px 0 70px;
+    }
+
+    article section {
+      margin-top: 46px;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 30px;
+      letter-spacing: -0.03em;
+    }
+
+    p {
+      margin: 0 0 16px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .note {
+      background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin: 26px 0;
+    }
+
+    ul {
+      margin: 12px 0 0;
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 7px 0;
+      color: var(--muted);
+    }
+
+    .stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .tag {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 11px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .cta {
+      background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-top: 48px;
+    }
+
+    .cta h2 {
+      font-size: 25px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      display: inline-flex;
+      padding: 11px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      text-decoration: none;
+      font-weight: 700;
+      background: var(--panel);
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #08101e;
+      border-color: transparent;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 24px 0 36px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 720px) {
+      .metrics { grid-template-columns: 1fr; }
+      .hero { padding-top: 48px; }
+      nav { align-items: flex-start; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="wrap">
+    <nav aria-label="Case study navigation">
+      <a class="brand" href="/">Alexey Kryukov</a>
+      <a class="back" href="/">← Back to portfolio</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="kicker">QA Automation Case Study · Playwright</div>
+      <h1>How I reduced regression time by ~90% with 500 automated tests</h1>
+      <p class="intro">
+        I worked as the only QA in a small product team. A lot of regression was manual,
+        releases were frequent, and checking the same flows again and again was taking too much time.
+        So I started building Playwright automation from scratch.
+      </p>
+
+      <div class="metrics">
+        <div class="metric">
+          <strong>~500</strong>
+          <span>automated tests built from scratch</span>
+        </div>
+        <div class="metric">
+          <strong>~95%</strong>
+          <span>coverage of key application and business flows</span>
+        </div>
+        <div class="metric">
+          <strong>~90%</strong>
+          <span>reduction in regression time</span>
+        </div>
+      </div>
+    </section>
+
+    <article>
+      <section>
+        <h2>The situation</h2>
+        <p>
+          The team was small: developers, a designer, and me as the sole QA.
+          We were shipping regularly, usually every one or two weeks.
+        </p>
+        <p>
+          The product kept growing, but regression was still heavily manual.
+          Every new feature also meant more old functionality that had to be checked before release.
+          That does not scale very well when one person owns most of the QA work.
+        </p>
+      </section>
+
+      <section>
+        <h2>I did not try to automate everything</h2>
+        <p>
+          I started with the flows that could hurt the product most if they broke.
+          The goal was not to get a big test count. The goal was to remove repetitive checks
+          and get fast feedback on the things we really cared about.
+        </p>
+
+        <ul>
+          <li>Critical user and business flows first</li>
+          <li>Stable scenarios before edge cases</li>
+          <li>API setup where it was faster than doing everything through the UI</li>
+          <li>Reusable fixtures and test data instead of repeating setup in every test</li>
+          <li>CI execution so regression did not depend on someone running it manually</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>The automation setup</h2>
+        <p>
+          I built the Playwright + TypeScript framework from scratch and kept it practical.
+          It included reusable fixtures, authentication state, API-based setup, test data,
+          parallel execution, retries, reporting and CI integration.
+        </p>
+
+        <div class="stack">
+          <span class="tag">Playwright</span>
+          <span class="tag">TypeScript</span>
+          <span class="tag">API Testing</span>
+          <span class="tag">Fixtures</span>
+          <span class="tag">Auth State</span>
+          <span class="tag">Test Data</span>
+          <span class="tag">Parallel Execution</span>
+          <span class="tag">CI/CD</span>
+        </div>
+
+        <div class="note">
+          I still kept manual and exploratory testing. Automation was there to remove repetitive work,
+          not to pretend that every useful QA activity can be automated.
+        </div>
+      </section>
+
+      <section>
+        <h2>How the suite grew</h2>
+        <p>
+          I added tests together with the product instead of trying to build one huge framework first.
+          New important functionality became part of regression, old tests were maintained,
+          and flaky or low-value checks were fixed or removed.
+        </p>
+        <p>
+          Over time the suite grew to around 500 automated tests and covered about 95% of the
+          key application and business flows.
+        </p>
+      </section>
+
+      <section>
+        <h2>The result</h2>
+        <p>
+          The number I care about most is not 500 tests.
+        </p>
+        <p>
+          Regression time went down by around 90%.
+        </p>
+        <p>
+          That changed how I could spend my time. Instead of checking the same old functionality
+          again and again, I could spend more time on new features, exploratory testing,
+          API/backend checks, strange edge cases and real product risks.
+        </p>
+      </section>
+
+      <section>
+        <h2>What I learned</h2>
+        <p>
+          A good automation project is not about maximizing the number of tests.
+          It is about deciding which checks are worth running hundreds of times and which ones
+          still need a human looking at the product.
+        </p>
+        <p>
+          For me, the best result is when automation becomes boring infrastructure:
+          it runs, catches regressions early, gives useful diagnostics, and lets the team focus
+          on the new problems instead of repeating yesterday's checks.
+        </p>
+      </section>
+
+      <section class="cta">
+        <h2>About me</h2>
+        <p class="muted">
+          I’m Alexey Kryukov, a Senior QA Automation Engineer / QA Lead with 13+ years in QA
+          and software engineering. I work with Playwright, TypeScript, APIs, CI/CD,
+          test strategy, debugging and full QA ownership.
+        </p>
+
+        <div class="actions">
+          <a class="btn primary" href="mailto:alexey.kryukov.91@gmail.com">Email me</a>
+          <a class="btn" href="https://www.linkedin.com/in/alexeykryukov/" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn" href="https://github.com/alexeykryukov" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn" href="https://www.upwork.com/freelancers/alexey" target="_blank" rel="noopener">Upwork</a>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer>
+    <div class="wrap">© Alexey Kryukov · Senior QA Automation Engineer / QA Lead</div>
+  </footer>
+</body>
+</html>
