@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Alexey Kryukov — Senior QA Automation Engineer / QA Lead</title>
+  <meta name="description" content="Senior QA Automation Engineer / QA Lead with 13+ years in QA and software engineering. Playwright, TypeScript, API testing, CI/CD, QA ownership and AI/LLM testing. 32,000+ Upwork hours and 150+ completed jobs." />
+
+  <meta property="og:title" content="Alexey Kryukov — Senior QA Automation Engineer / QA Lead" />
+  <meta property="og:description" content="13+ years in QA and software engineering. Playwright, TypeScript, API testing, CI/CD, QA ownership and AI/LLM testing." />
+  <meta property="og:type" content="website" />
+
+  <meta name="robots" content="index,follow" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Alexey Kryukov",
+    "jobTitle": "Senior QA Automation Engineer / QA Lead",
+    "sameAs": [
+      "https://www.linkedin.com/in/alexeykryukov/",
+      "https://github.com/alexeykryukov",
+      "https://www.upwork.com/freelancers/alexey"
+    ],
+    "knowsAbout": [
+      "Quality Assurance",
+      "QA Automation",
+      "Playwright",
+      "TypeScript",
+      "API Testing",
+      "CI/CD",
+      "Cypress",
+      "Selenium",
+      "C#",
+      ".NET",
+      "AI Testing",
+      "LLM Testing"
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a2f;
+      --panel-2: #18223b;
+      --text: #eef3ff;
+      --muted: #aeb9d1;
+      --line: #26324f;
+      --accent: #7db3ff;
+      --accent-2: #a8caff;
+      --max: 1080px;
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(64, 118, 255, .16), transparent 34rem),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; }
+
+    .wrap {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 28px 0 0;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 12px 0;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .nav-links a {
+      text-decoration: none;
+    }
+
+    .hero {
+      padding: 84px 0 56px;
+    }
+
+    .eyebrow {
+      color: var(--accent-2);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 12px 0 18px;
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
+      max-width: 900px;
+    }
+
+    .hero p {
+      max-width: 760px;
+      font-size: clamp(18px, 2.3vw, 23px);
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 17px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      text-decoration: none;
+      font-weight: 700;
+      background: var(--panel);
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #08101e;
+      border-color: transparent;
+    }
+
+    section {
+      padding: 42px 0;
+    }
+
+    .section-title {
+      margin: 0 0 18px;
+      font-size: 30px;
+      letter-spacing: -0.03em;
+    }
+
+    .section-lead {
+      color: var(--muted);
+      max-width: 760px;
+      margin: -8px 0 24px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .metric, .card {
+      background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 31px;
+      line-height: 1.1;
+      margin-bottom: 7px;
+    }
+
+    .metric span {
+      color: var(--muted);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .card p {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .tag {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 5px 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+    }
+
+    .role {
+      border-left: 2px solid var(--line);
+      padding: 4px 0 4px 20px;
+    }
+
+    .role h3 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .role .meta {
+      color: var(--accent-2);
+      font-size: 14px;
+      margin: 2px 0 7px;
+    }
+
+    .role p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 850px;
+    }
+
+    .project-link {
+      margin-top: 16px;
+      display: inline-block;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--accent-2);
+    }
+
+    .contact {
+      padding-bottom: 90px;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 24px 0 36px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 780px) {
+      .metrics, .grid-2 { grid-template-columns: 1fr; }
+      .hero { padding-top: 58px; }
+      nav { align-items: flex-start; }
+      .nav-links { justify-content: flex-end; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="wrap">
+    <nav aria-label="Main navigation">
+      <div class="brand">Alexey Kryukov</div>
+      <div class="nav-links">
+        <a href="#results">Results</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero wrap">
+      <div class="eyebrow">Senior QA Automation Engineer / QA Lead</div>
+      <h1>I build quality systems that help teams ship with confidence.</h1>
+      <p>
+        13+ years in QA and software engineering. I work across Playwright, TypeScript,
+        API testing, CI/CD, test strategy, debugging and release ownership — from the
+        first requirement to the final go/no-go decision.
+      </p>
+
+      <div class="actions">
+        <a class="btn primary" href="mailto:alexey.kryukov.91@gmail.com">Email me</a>
+        <a class="btn" href="https://www.linkedin.com/in/alexeykryukov/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="https://github.com/alexeykryukov" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="https://www.upwork.com/freelancers/alexey" target="_blank" rel="noopener">Upwork</a>
+      </div>
+    </section>
+
+    <section id="results" class="wrap">
+      <h2 class="section-title">Selected results</h2>
+      <p class="section-lead">
+        I prefer measurable outcomes over long skill lists. These are a few results from real product work.
+      </p>
+
+      <div class="metrics">
+        <div class="metric">
+          <strong>~500</strong>
+          <span>automated tests built from scratch on one product</span>
+        </div>
+        <div class="metric">
+          <strong>~95%</strong>
+          <span>coverage of key application and business flows</span>
+        </div>
+        <div class="metric">
+          <strong>~90%</strong>
+          <span>reduction in regression time after automation</span>
+        </div>
+        <div class="metric">
+          <strong>1000+</strong>
+          <span>Playwright scenarios maintained on another product</span>
+        </div>
+        <div class="metric">
+          <strong>32,000+</strong>
+          <span>hours worked on Upwork</span>
+        </div>
+        <div class="metric">
+          <strong>150+</strong>
+          <span>completed Upwork jobs</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="grid-2">
+        <article class="card">
+          <h3>End-to-end QA ownership</h3>
+          <p>
+            I can take a product from requirements and test strategy through exploratory testing,
+            APIs, automation, CI/CD, debugging and release readiness.
+          </p>
+          <div class="tags">
+            <span class="tag">Playwright</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">API Testing</span>
+            <span class="tag">CI/CD</span>
+            <span class="tag">SQL</span>
+            <span class="tag">Mobile</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Engineering background</h3>
+          <p>
+            I started my career as a C#/.NET software developer. That background helps me go deeper
+            than UI checks: code, APIs, databases, logs, integrations and root-cause analysis.
+          </p>
+          <div class="tags">
+            <span class="tag">C#/.NET</span>
+            <span class="tag">Selenium</span>
+            <span class="tag">Cypress</span>
+            <span class="tag">Postman</span>
+            <span class="tag">Jenkins</span>
+            <span class="tag">Azure DevOps</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="projects" class="wrap">
+      <h2 class="section-title">Public QA projects</h2>
+      <p class="section-lead">
+        Small public projects that show how I structure automation and test AI-powered systems.
+      </p>
+
+      <div class="grid-2">
+        <article class="card">
+          <h3>Playwright QA Framework Demo</h3>
+          <p>
+            A practical Playwright/TypeScript automation framework with fixtures, page objects,
+            API setup, test data, smoke/regression structure, reporting and CI.
+          </p>
+          <a class="project-link" href="https://github.com/alexeykryukov/playwright-qa-framework-demo" target="_blank" rel="noopener">
+            View on GitHub →
+          </a>
+        </article>
+
+        <article class="card">
+          <h3>AI Agent QA Testing Demo</h3>
+          <p>
+            A QA project for testing AI agents beyond simple output checks: tool calls, context,
+            retries, duplicate actions, verified completion, prompt injection and failure modes.
+          </p>
+          <a class="project-link" href="https://github.com/alexeykryukov/ai-agent-qa-testing-demo" target="_blank" rel="noopener">
+            View on GitHub →
+          </a>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <h2 class="section-title">Business impact</h2>
+      <div class="card">
+        <h3>QA is not only about finding bugs</h3>
+        <p>
+          In one healthcare product, I identified defects blocking several sales channels.
+          After the fixes, sales through those channels increased by about 500%, representing
+          roughly $500k in business impact.
+        </p>
+      </div>
+    </section>
+
+    <section id="experience" class="wrap">
+      <h2 class="section-title">Experience</h2>
+      <p class="section-lead">
+        My background includes software development, senior QA, sole-QA ownership and QA leadership.
+      </p>
+
+      <div class="timeline">
+        <div class="role">
+          <h3>Senior QA Automation Engineer / QA Lead / Consultant</h3>
+          <div class="meta">Independent / product teams</div>
+          <p>
+            QA ownership across web, mobile, APIs, automation, CI/CD and AI-powered products.
+            Built 20+ automation frameworks/projects from scratch during my career.
+          </p>
+        </div>
+
+        <div class="role">
+          <h3>Senior QA Engineer / Sole QA</h3>
+          <div class="meta">Village Guide</div>
+          <p>
+            Owned quality for a US/Canada real-estate product, including web testing, API testing,
+            releases and investigation of user-reported issues.
+          </p>
+        </div>
+
+        <div class="role">
+          <h3>Lead QA Engineer</h3>
+          <div class="meta">Jimmy Technologies</div>
+          <p>
+            Led QA for a transportation product across web, mobile and APIs, including automation,
+            CI/CD and release readiness.
+          </p>
+        </div>
+
+        <div class="role">
+          <h3>QA Lead</h3>
+          <div class="meta">SnapMD</div>
+          <p>
+            Led a QA team of up to 7 people for a healthcare/telemedicine platform. Worked with
+            Selenium + C#, 50+ API endpoints, MS SQL, multiple environments, Bamboo CI and release go/no-go decisions.
+          </p>
+        </div>
+
+        <div class="role">
+          <h3>Software Developer — C#/.NET</h3>
+          <div class="meta">Akvelon</div>
+          <p>
+            Worked across frontend/backend development, database design, SQL, integrations,
+            architecture, reusable components, unit tests and debugging.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap">
+      <h2 class="section-title">AI / LLM testing</h2>
+      <div class="card">
+        <p>
+          AI is an additional part of my QA work, not a replacement for the fundamentals.
+          I test chatbots, agents, RAG systems, tool/API calls, memory and context, multi-turn behavior,
+          hallucinations, retries, guardrails and prompt-injection scenarios. I also use AI tools daily
+          for requirements analysis, test design, automation and debugging.
+        </p>
+      </div>
+    </section>
+
+    <section id="contact" class="wrap contact">
+      <h2 class="section-title">Let’s talk</h2>
+      <p class="section-lead">
+        I’m open to remote Senior QA Automation, SDET, QA Lead, first/sole QA and quality engineering work.
+        Contract, B2B and long-term cooperation are welcome.
+      </p>
+      <div class="actions">
+        <a class="btn primary" href="mailto:alexey.kryukov.91@gmail.com">alexey.kryukov.91@gmail.com</a>
+        <a class="btn" href="https://www.linkedin.com/in/alexeykryukov/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">© Alexey Kryukov · Senior QA Automation Engineer / QA Lead</div>
+  </footer>
+</body>
+</html>
