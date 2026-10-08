@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How I Test AI Agents Beyond the Final Answer — Alexey Kryukov</title>
+<meta name="description" content="A practical AI QA case study by Alexey Kryukov: testing AI agents beyond output quality, including tool calls, memory and context, retries, duplicate actions, prompt injection and verified completion.">
+<link rel="canonical" href="https://alexeykryukov.github.io/case-studies/testing-ai-agents.html">
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="How I Test AI Agents Beyond the Final Answer">
+<meta property="og:description" content="A practical QA approach for AI agents: tool calls, memory/context, retries, duplicate actions, prompt injection and verified completion.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://alexeykryukov.github.io/case-studies/testing-ai-agents.html">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"How I Test AI Agents Beyond the Final Answer","author":{"@type":"Person","name":"Alexey Kryukov","url":"https://alexeykryukov.github.io/"},"mainEntityOfPage":"https://alexeykryukov.github.io/case-studies/testing-ai-agents.html","keywords":["AI Testing","AI Agents","LLM Testing","Tool Calls","RAG","Memory Testing","Prompt Injection","QA Engineering"]}</script>
+
+<style>
+:root{--bg:#0b1020;--panel:#121a2f;--panel2:#18223b;--text:#eef3ff;--muted:#aeb9d1;--line:#26324f;--accent:#7db3ff;--accent2:#a8caff;--max:920px;--radius:18px}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at top left,rgba(64,118,255,.16),transparent 34rem),var(--bg);color:var(--text);line-height:1.7}
+a{color:inherit}.wrap{width:min(var(--max),calc(100% - 40px));margin:0 auto}
+header{padding:28px 0 0}nav{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 0}
+.brand{font-weight:800;text-decoration:none}.back{color:var(--muted);text-decoration:none;font-size:14px}
+.hero{padding:70px 0 34px}.kicker{color:var(--accent2);font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase}
+h1{margin:12px 0 18px;font-size:clamp(40px,6vw,64px);line-height:1.04;letter-spacing:-.045em}
+.intro{margin:0;max-width:800px;color:var(--muted);font-size:clamp(18px,2.2vw,22px)}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:34px 0 0}
+.metric,.cta{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+.metric strong{display:block;font-size:28px;line-height:1.1;margin-bottom:6px}.metric span,.muted,li{color:var(--muted)}
+article{padding:20px 0 70px}article section{margin-top:46px}h2{margin:0 0 12px;font-size:30px;letter-spacing:-.03em}p{margin:0 0 16px}
+.note{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--radius);padding:20px 22px;margin:26px 0}
+ul{margin:12px 0 0;padding-left:22px}li{margin:7px 0}.stack{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.tag{border:1px solid var(--line);border-radius:999px;padding:6px 11px;color:var(--muted);font-size:13px}
+.cta{margin-top:48px;padding:24px}.cta h2{font-size:25px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.btn{display:inline-flex;padding:11px 16px;border-radius:999px;border:1px solid var(--line);text-decoration:none;font-weight:700;background:var(--panel)}
+.btn.primary{background:var(--accent);color:#08101e;border-color:transparent}
+footer{border-top:1px solid var(--line);padding:24px 0 36px;color:var(--muted);font-size:14px}
+@media(max-width:720px){.metrics{grid-template-columns:1fr}.hero{padding-top:48px}nav{align-items:flex-start}}
+</style>
+
+</head>
+<body>
+<header class="wrap"><nav><a class="brand" href="/">Alexey Kryukov</a><a class="back" href="/">← Back to portfolio</a></nav></header>
+<main class="wrap">
+<section class="hero">
+<div class="kicker">AI / LLM QA Case Study</div>
+<h1>How I test AI agents beyond the final answer</h1>
+<p class="intro">A chatbot can return a good-looking answer and still fail underneath. With AI agents, I want to know not only what the model said, but what it did: which tools it called, what state changed, what it remembered, and whether the task was really completed.</p>
+<div class="metrics">
+<div class="metric"><strong>Tool calls</strong><span>validate actions, inputs and results</span></div>
+<div class="metric"><strong>Memory</strong><span>check context across multiple turns</span></div>
+<div class="metric"><strong>Guardrails</strong><span>probe prompt injection and unsafe behavior</span></div>
+</div>
+</section>
+<article>
+<section><h2>The problem with testing only the final response</h2>
+<p>Traditional UI testing often has a clear expected result. AI systems are different: the wording can change while the behavior is still correct.</p>
+<p>But the opposite is also true. The final answer can sound correct even when the agent called the wrong tool, repeated an action, lost context or reported completion without actually changing the system state.</p>
+</section>
+<section><h2>What I look at</h2>
+<ul>
+<li>Whether the correct tool or API was called</li>
+<li>Whether the tool received the right parameters</li>
+<li>Whether retries create duplicate actions</li>
+<li>Whether state really changed after the agent says the task is complete</li>
+<li>Whether memory and context survive multi-turn conversations correctly</li>
+<li>Whether the model invents facts or actions that never happened</li>
+<li>How the system behaves under prompt-injection attempts</li>
+</ul>
+</section>
+<section><h2>Verified completion matters</h2>
+<p>One of the most important checks for an agent is simple: if it says “done”, can I independently verify that it is actually done?</p>
+<div class="note">I do not treat the model's final sentence as the source of truth. The system state, API result or tool output should confirm completion.</div>
+</section>
+<section><h2>Retries and duplicate actions</h2>
+<p>Retry logic is useful, but it can also create a different class of bugs. If an agent retries an operation that already succeeded, it may create duplicate records, duplicate messages or repeated external actions.</p>
+<p>So I test both successful retry behavior and what happens when the system is uncertain whether the previous action completed.</p>
+</section>
+<section><h2>Memory and multi-turn behavior</h2>
+<p>AI systems often need to remember information from earlier turns. I test whether the right context is retained, whether old context incorrectly leaks into a new task, and how the system behaves when the conversation becomes long or contradictory.</p>
+</section>
+<section><h2>Prompt injection and guardrails</h2>
+<p>I also test whether user content can push the agent outside its intended behavior, override instructions or influence tool use in unsafe ways.</p>
+<p>The goal is not to invent exotic attacks for their own sake. It is to understand where untrusted input meets real actions.</p>
+</section>
+<section><h2>My practical approach</h2>
+<p>I treat AI testing as a combination of classic QA and evaluation. I still care about APIs, logs, state, reproducibility and business rules. The new part is that the exact output can vary, so the test needs to focus more on behavior and evidence.</p>
+<div class="stack">
+<span class="tag">AI Agents</span><span class="tag">LLM Testing</span><span class="tag">Tool Calls</span><span class="tag">Memory / Context</span><span class="tag">Multi-turn</span><span class="tag">Retries</span><span class="tag">Prompt Injection</span><span class="tag">Evaluation</span>
+</div>
+</section>
+<section><h2>Public demo</h2>
+<p>I also built a small public QA demo around these ideas, including tool-call validation, context handling, retries, duplicate actions, verified completion and prompt-injection scenarios.</p>
+<p><a href="https://github.com/alexeykryukov/ai-agent-qa-testing-demo" target="_blank" rel="noopener">View the AI Agent QA Testing Demo on GitHub →</a></p>
+</section>
+<section class="cta"><h2>About me</h2>
+<p class="muted">I’m Alexey Kryukov, a Senior QA Automation Engineer / QA Lead with 13+ years in QA and software engineering. I work across Playwright, TypeScript, APIs, CI/CD, test strategy, debugging and full QA ownership.</p>
+<div class="actions">
+<a class="btn primary" href="mailto:alexey.kryukov.91@gmail.com">Email me</a>
+<a class="btn" href="https://www.linkedin.com/in/alexeykryukov/" target="_blank" rel="noopener">LinkedIn</a>
+<a class="btn" href="https://github.com/alexeykryukov" target="_blank" rel="noopener">GitHub</a>
+<a class="btn" href="https://www.upwork.com/freelancers/alexey" target="_blank" rel="noopener">Upwork</a>
+</div></section>
+</article>
+</main>
+<footer><div class="wrap">© Alexey Kryukov · Senior QA Automation Engineer / QA Lead</div></footer>
+</body></html>
